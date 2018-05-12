@@ -1,0 +1,32 @@
+En Linux en una distribución tipo Debian.
+Para instalar aramadillo:
+Hacer update y upgrade de los repositorios.
+sudo apt update
+sudo apt upgrade
+
+Descargar la versión estable más reciente de armadillo desde:
+http://arma.sourceforge.net/download.html
+En el directorio donde se haya descargado (e.g. Downloads):
+cd Downloads
+cd arma*
+sudo apt install cmake libopenblas-dev
+sudo apt install cmake liblapack-dev
+cmake .
+make
+sudo make install
+
+Para instalar octave:
+sudo apt-get install octave
+
+Para iniciar octave:
+octave
+
+Una vez dentro del IDE de octave ir al directorio donde se haya guardado los archivos del 
+programa, y correr plots.m, no sin antes haber corrido el programa en C++
+
+Para compilar el programa:
+g++ *.cpp *.h -o <nombre_ejecutable> -std=c++14 -O2 -larmadillo -lopenblas -llapack
+
+Para correrlo:
+./<nombre_ejecutable>
+
