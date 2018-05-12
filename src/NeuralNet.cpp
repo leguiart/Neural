@@ -10,7 +10,10 @@
 void NeuralNet::Train()
 {
   int j = 0; //Contador de iteraciones
+  arma::mat eval;
+  double error_mc;
   do{
+    error_mc = 0;
     //Para cada capa
     for(int i = 0; i < layerList.size(); i++)
     {
@@ -29,18 +32,26 @@ void NeuralNet::Train()
     else
       cont = rand()%(A.size()-1);
 
-    if(j<2)
-    {
-      Eval();
-      its.push_back(R);
-    }
-
     ForwardProp();
     BackProp();
+    if(j<2)
+    {
+      its.push_back(Evaluate());
+      eval = its[j];
+    }
+    else{
+      eval = Evaluate();
+    }
+
+    for(int k = 0; k < A.n_cols; k++)
+    {
+      error_mc += pow(eval[k] - B[k],2);
+    }
+    error_mc = error_mc/A.n_cols;
     s.clear();
     am.clear();
     j++;
-  }while(j<it);
+  }while(j<it && error_mc>error_min);
 }
 
 void NeuralNet::ForwardProp()
@@ -52,22 +63,6 @@ void NeuralNet::ForwardProp()
     am.push_back(layerList[i].ForwardProp(am[i], 0));
   }
   error = B.col(cont) - am[layerList.size()];
-}
-
-void NeuralNet::Eval()
-{
-  R.set_size(size(B));
-  for(int i=0; i<B.n_cols; i++)
-  {
-    am.push_back(A.col(i));
-    am.push_back(layerList[0].ForwardProp(A, i));
-    for(int j=1; j<layerList.size(); j++)
-    {
-      am.push_back(layerList[j].ForwardProp(am[j], 0));
-    }
-    R(0,i) = am[layerList.size()](0,0);
-    am.clear();
-  }
 }
 
 void NeuralNet::BackProp()
@@ -94,6 +89,18 @@ void NeuralNet::BackProp()
 }
 
 arma::mat NeuralNet::Evaluate(){
-  Eval();
+  arma::mat R;
+  R.set_size(size(B));
+  for(int i=0; i<B.n_cols; i++)
+  {
+    am.push_back(A.col(i));
+    am.push_back(layerList[0].ForwardProp(A, i));
+    for(int j=1; j<layerList.size(); j++)
+    {
+      am.push_back(layerList[j].ForwardProp(am[j], 0));
+    }
+    R(0,i) = am[layerList.size()](0,0);
+    am.clear();
+  }
   return R;
 }

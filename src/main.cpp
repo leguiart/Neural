@@ -75,7 +75,7 @@ arma::mat g(arma::mat, double, double);
 int main() {
   NeuralNet nn1, nn2, nn3, nn4;
   std::ofstream file;
-  std::vector<arma::mat> M, M2, M3;
+  std::vector<arma::mat> M;
   std::vector<Perceptron> perceptrones1, perceptrones2, perceptrones3, perceptrones4;
   arma::mat W1, b1, W2, b2, p1, g1, g2, aux;
   W1 << -0.27 << arma::endr
@@ -90,7 +90,7 @@ int main() {
   //creamos cuatro listas de perceptrones para los 4 ejercicios
   perceptrones1.push_back(Perceptron(1, 2, W1, b1, LOG_SIG));
   perceptrones1.push_back(Perceptron(2, 1, W2, b2, LINEAR));
-  nn1 = NeuralNet(perceptrones1, p1, g1, 0.1f, 2000, 21);
+  nn1 = NeuralNet(perceptrones1, p1, g1, 0.1f, 0.01f, 5000, 21);
   nn1.Train();
   aux = nn1.Evaluate();
   std::cout << aux << std::endl;
@@ -104,7 +104,7 @@ int main() {
 
   perceptrones2.push_back(Perceptron(1, 2, LOG_SIG));
   perceptrones2.push_back(Perceptron(2, 1, LINEAR));
-  nn2 = NeuralNet(perceptrones2, p1, g2, 0.5f, 2000);
+  nn2 = NeuralNet(perceptrones2, p1, g2, 0.5f, 0.01f, 20000);
   nn2.Train();
   aux = nn2.Evaluate();
   std::cout << aux << std::endl;
@@ -115,7 +115,7 @@ int main() {
 
   perceptrones3.push_back(Perceptron(1, 2, LOG_SIG));
   perceptrones3.push_back(Perceptron(2, 1, LINEAR));
-  nn3 = NeuralNet(perceptrones3, p1, g2, 1.0f, 10);
+  nn3 = NeuralNet(perceptrones3, p1, g2, 0.1f, 0.02f, 50000);
   nn3.Train();
   aux = nn3.Evaluate();
   std::cout << aux << std::endl;
@@ -125,7 +125,7 @@ int main() {
 
   perceptrones4.push_back(Perceptron(1, 10, LOG_SIG));
   perceptrones4.push_back(Perceptron(10, 1, LINEAR));
-  nn4 = NeuralNet(perceptrones4, p1, g2, 0.5f, 8);
+  nn4 = NeuralNet(perceptrones4, p1, g2, 0.5f, 0.1f, 80000);
   nn4.Train();
   aux = nn4.Evaluate();
   std::cout << aux << std::endl;

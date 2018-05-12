@@ -29,13 +29,13 @@ class NeuralNet{
         @param lr: Learning Rate
         @param it: numero de iteraciones a efectuar 
     */
-        NeuralNet(std::vector<Perceptron> layerList, arma::mat A, arma::mat B, double lr, int it) :
-        layerList(layerList), A(A), B(B),lr(lr), it(it){
+        NeuralNet(std::vector<Perceptron> layerList, arma::mat A, arma::mat B, double lr, double error_min, int it) :
+        layerList(layerList), A(A), B(B),lr(lr), error_min(error_min), it(it){
             srand(time(NULL));
             cont_init = -1;
         }
 
-    /****! Constructor2 ****/
+    /****! Constructor3 ****/
     /*!
         Constructor con parametros para
         inicializar el objeto
@@ -45,8 +45,8 @@ class NeuralNet{
         @param lr: Learning Rate
         @param it: numero de iteraciones a efectuar 
     */
-        NeuralNet(std::vector<Perceptron> layerList, arma::mat A, arma::mat B, double lr, int it, double cont_init) :
-        layerList(layerList), A(A), B(B),lr(lr), it(it), cont_init(cont_init){
+        NeuralNet(std::vector<Perceptron> layerList, arma::mat A, arma::mat B, double lr, double error_min, int it, double cont_init) :
+        layerList(layerList), A(A), B(B),lr(lr), error_min(error_min), it(it), cont_init(cont_init){
             srand(time(NULL));
         }
 
@@ -95,7 +95,7 @@ class NeuralNet{
             mat error: contendra el error de la red, la referencia menos la salida de la red
             mat R: contendra la salida de la red con los pesos y bias de la iteracion final
         */  
-        arma::mat A, B, error, R;
+        arma::mat A, B, error;
 
         /****! Atributos protegidos enteros ****/
         /*!
@@ -109,7 +109,7 @@ class NeuralNet{
         /*!
             lr: learning rate
         */  
-        double lr;
+        double lr, error_min;
 
         /****! Metodo protegido ****/
         /*!
@@ -124,13 +124,7 @@ class NeuralNet{
         */
         void BackProp();
     private:
-        /****! Metodo privado ****/
-        /*!
-            Metodo que solo sirve para ser llamado por Evaluate y 
-            que este le delegue la tarea de evaluar la red, unicamente
-            lo use para tener algo a que ponerle el acceso privado.
-        */
-        void Eval();
+        
      
 };
 

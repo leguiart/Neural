@@ -52,8 +52,8 @@ Perceptron::Perceptron(arma::mat A, arma::mat B, arma::mat W, arma::mat b, Trans
 Perceptron::Perceptron(int n, int m, TransferFunction tf) : n(n), m(m), tf(tf)
 {
   arma::arma_rng::set_seed_random();
-  W = arma::randu(m,n);
-  b = arma::randu(m,1);
+  W = arma::randn(m,n);
+  b = arma::randn(m,1);
 }
 
 arma::mat Perceptron::hardLim(arma::mat n1){
